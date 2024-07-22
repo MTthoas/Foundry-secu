@@ -1,66 +1,52 @@
-## Foundry
+## Vulnérabilités exploitées
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+AttackFlip correspond à un flip pour sepolia
 
-Foundry consists of:
+Assurez-vous que le contrat HackMeIfYouCan est déployé sur le réseau. Modifiez l'adresse du contrat déployé dans le script d'attaque si nécessaire.
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+hackMeContract = HackMeIfYouCan(0x9D29D33d4329640e96cC259E141838EB3EB2f1d9);
 
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```sh
+forge script script/Attack --tc Attack --broadcast --rpc-url <URL_DU_RESEAU>
 ```
 
-### Test
+## Vulnérabilités exploitées
 
-```shell
-$ forge test
-```
+### AttackFlip
 
-### Format
+Le script AttackFlip correspond à une exploitation spécifique pour le réseau Sepolia, permettant d'exploiter les prédictions des blocs pour gagner des flips consécutifs.
 
-```shell
-$ forge fmt
-```
+Contenu des attaques
+Le répertoire ./scripts contient les différents scripts d'attaque. Le script principal, Attack, couvre les principales vulnérabilités suivantes :
 
-### Gas Snapshots
+- flip
 
-```shell
-$ forge snapshot
-```
+La fonction flip ne vérifie pas correctement les conditions du bloc précédent, permettant une exploitation via des appels prédictifs.
 
-### Anvil
+- contribute
 
-```shell
-$ anvil
-```
+La fonction contribute permet de devenir le propriétaire en envoyant une petite quantité d'Ether.
 
-### Deploy
+- goTo
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
+La fonction goTo ne vérifie pas correctement si l'étage est le dernier, permettant de falsifier les étages.
 
-### Cast
+- sendKey
 
-```shell
-$ cast <subcommand>
-```
+La fonction sendKey peut être exploitée en lisant directement la clé du stockage.
 
-### Help
+- sendPassword
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+La fonction sendPassword peut être exploitée en lisant directement le mot de passe du stockage.
+
+- transfer
+
+La fonction transfer peut être exploitée pour obtenir des marques en transférant des fonds.
+
+- receive
+
+La fonction receive peut être exploitée via une attaque de réentrance.
+
+- addPoint
+
+La fonction permet d'avoir un point gratuit si on est pas l'origin.
